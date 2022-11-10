@@ -57,4 +57,11 @@ def search(request):
         "entries": util.list_entries()
     })
 
+def new_page(request):
+    if request.method == "POST":
+        return HttpResponse("POST")
+    
+    else:
+        return render(request, "encyclopedia/new_page.html")
+
 
