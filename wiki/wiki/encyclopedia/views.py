@@ -59,7 +59,28 @@ def search(request):
 
 def new_page(request):
     if request.method == "POST":
-        return HttpResponse("POST")
+        title = request.POST['title']
+        
+        # check if title used
+        entries = util.list_entries()
+        for entry in entries:
+            if entry.lower() == title.lower():
+                return render(request, "encyclopedia/error_new_page.html", {
+                "title": title
+            })
+            
+        # save to file
+        title = request.POST['title']
+        content = request.POST['content']
+        util.save_entry(title, content)
+
+        # redirect to new entry
+        return render(request, "encyclopedia/entry.html", {
+                    "title": title,
+                    "entry": util.get_entry(f"{title}")
+                })
+
+
     
     else:
         return render(request, "encyclopedia/new_page.html")
