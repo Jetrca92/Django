@@ -57,6 +57,7 @@ def search(request):
         "entries": util.list_entries()
     })
 
+# make new page
 def new_page(request):
     if request.method == "POST":
         title = request.POST['title']
@@ -83,8 +84,11 @@ def new_page(request):
     else:
         return render(request, "encyclopedia/new_page.html")
 
+# edit existing page
 def edit_page(request):
     if request.method == "POST":
+        
+        # populate form with content
         title = request.POST['title']
         return render(request, "encyclopedia/edit_page.html", {
             "title": title,
@@ -92,6 +96,24 @@ def edit_page(request):
         })
 
     else:
-        return render(request, "encyclopedia/edit_page.html")
+        return HttpResponse("Error!")
+
+# update edited page
+def update_page(request):
+    if request.method == "POST":
+
+        #get data from edit_page
+        title = request.POST['title']
+        content = request.POST['content']
+
+        #save and redirect to edited page
+        util.save_entry(title, content)
+        return render(request, "encyclopedia/entry.html", {
+                    "title": title,
+                    "entry": util.get_entry(f"{title}")
+                })
+
+    else:
+        return HttpResponse("Error!")
 
 

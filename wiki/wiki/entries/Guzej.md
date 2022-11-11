@@ -1,1 +1,1 @@
-Guzej is a young programmer.
+Guzej is a young programmer. NOT!
