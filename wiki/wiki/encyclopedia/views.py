@@ -116,4 +116,9 @@ def update_page(request):
     else:
         return HttpResponse("Error!")
 
+def random_page(request):
+    entries = util.list_entries
+    y = entries[0]
+    return HttpResponse(f"{y}")
+
 
