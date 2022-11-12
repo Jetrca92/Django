@@ -20,9 +20,10 @@ def view(request, title):
         return render(request, "encyclopedia/error.html", {
             "title": title
         })
+    entry = markdown2.markdown(entry)
     return render(request, "encyclopedia/entry.html", {
         "title": title,
-        "entry": markdown2.markdown(f"{entry}")
+        "entry": entry
     })
 
 # search entries
