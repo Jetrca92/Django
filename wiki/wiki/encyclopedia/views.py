@@ -37,9 +37,10 @@ def search(request):
 
             #redirect to page if perfect match
             if entry.lower() == q.lower():
+                content = markdown2.markdown(util.get_entry(entry))
                 return render(request, "encyclopedia/entry.html", {
                     "title": q,
-                    "entry": util.get_entry(f"{q}")
+                    "entry": content
                 })
             
             #redirect to list of results containing a substring
@@ -78,9 +79,10 @@ def new_page(request):
         util.save_entry(title, content)
 
         # redirect to new entry
+        entry = markdown2.markdown(content)
         return render(request, "encyclopedia/entry.html", {
                     "title": title,
-                    "entry": util.get_entry(f"{title}")
+                    "entry": entry
                 })
 
     else:
@@ -110,9 +112,10 @@ def update_page(request):
 
         #save and redirect to edited page
         util.save_entry(title, content)
+        entry = markdown2.markdown(content)
         return render(request, "encyclopedia/entry.html", {
                     "title": title,
-                    "entry": util.get_entry(f"{title}")
+                    "entry": entry
                 })
 
     else:
@@ -126,9 +129,10 @@ def random_page(request):
     title = entries[x]
 
     # redirect to random entry
+    entry = markdown2.markdown(util.get_entry(f"{title}"))
     return render(request, "encyclopedia/entry.html", {
                 "title": title,
-                "entry": util.get_entry(f"{title}")
+                "entry": entry
             })
     
 
