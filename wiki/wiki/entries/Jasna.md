@@ -1,0 +1,1 @@
+Jasna ima traktor. In kosilnico.

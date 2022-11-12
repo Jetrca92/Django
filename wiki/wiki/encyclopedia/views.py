@@ -2,8 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse
+import markdown2
 
 from . import util
+import random
 
 # display list of entries
 def index(request): 
@@ -14,14 +16,13 @@ def index(request):
 # view entry, display error if no entry
 def view(request, title):
     entry = util.get_entry(f"{title}")
-    entry_link = f"wiki/{title}"
     if entry == None:
         return render(request, "encyclopedia/error.html", {
             "title": title
         })
     return render(request, "encyclopedia/entry.html", {
         "title": title,
-        "entry": entry
+        "entry": markdown2.markdown(f"{entry}")
     })
 
 # search entries
@@ -117,8 +118,17 @@ def update_page(request):
         return HttpResponse("Error!")
 
 def random_page(request):
-    entries = util.list_entries
-    y = entries[0]
-    return HttpResponse(f"{y}")
+    # get random entry
+    entries = util.list_entries()
+    y = len(entries) - 1
+    x = random.randint(0, y)
+    title = entries[x]
+
+    # redirect to random entry
+    return render(request, "encyclopedia/entry.html", {
+                "title": title,
+                "entry": util.get_entry(f"{title}")
+            })
+    
 
 
