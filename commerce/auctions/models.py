@@ -11,6 +11,9 @@ class AuctionListings(models.Model):
     category = models.CharField(max_length=64)
     price = models.DecimalField(decimal_places=2, max_digits=10)
 
+    def __str__(self):
+        return f"{self.name}({self.category}), {self.price}$ Description: {self.description}"
+
 class Bids(models.Model):
     starting_bid = models.DecimalField(decimal_places=2, max_digits=10)
 
