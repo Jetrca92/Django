@@ -8,7 +8,10 @@ from .models import User, AuctionListings, Bids, Comments
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+    listings = AuctionListings.objects.all()
+    return render(request, "auctions/index.html", {
+        "listings": listings
+        })
 
 
 def login_view(request):
@@ -76,3 +79,6 @@ def new_listing(request):
 
     else:
         return render(request, "auctions/new_listing.html")
+
+def entry(request, title):
+    pass

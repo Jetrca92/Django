@@ -12,7 +12,7 @@ class AuctionListings(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=10)
 
     def __str__(self):
-        return f"{self.name}({self.category}), {self.price}$ Description: {self.description}"
+        return f"{self.name}({self.category}), {self.description}, {self.price}$ "
 
 class Bids(models.Model):
     starting_bid = models.DecimalField(decimal_places=2, max_digits=10)
