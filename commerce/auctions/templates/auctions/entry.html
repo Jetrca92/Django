@@ -1,0 +1,9 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Listing: {{ entry.name }}</h2>
+    <img href="{{ entry.imgurl }}">
+    <p>{{ entry.description }}</p>
+    <h2>${{ entry.price }}</h3>
+    
+{% endblock %}

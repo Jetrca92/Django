@@ -72,8 +72,9 @@ def new_listing(request):
         name = request.POST['title']
         category = request.POST['category']
         description = request.POST['description']
+        imgurl = request.POST['imgurl']
         price = request.POST['starting_bid']
-        ins = AuctionListings(name=name, category=category, description=description, price=price)
+        ins = AuctionListings(name=name, category=category, description=description, imgurl=imgurl, price=price)
         ins.save()
         return render(request, "auctions/new_listing_saved.html")
 
