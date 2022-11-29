@@ -82,4 +82,7 @@ def new_listing(request):
         return render(request, "auctions/new_listing.html")
 
 def entry(request, title):
-    pass
+    entry = AuctionListings.objects.get(name=title)
+    return render(request, "auctions/entry.html", {
+        "entry": entry
+    })

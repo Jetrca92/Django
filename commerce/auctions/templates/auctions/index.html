@@ -4,7 +4,7 @@
     <h2>Active Listings</h2>
     <ul>
         {% for listing in listings %}
-            <li><a href="entries/{{ listing }}">{{ listing }}</a></li>
+            <li><a href="{% url 'entry' listing.name %}">{{ listing }}</a></li>
         {% empty %}
             <li>No listings.</li>
         {% endfor %}
