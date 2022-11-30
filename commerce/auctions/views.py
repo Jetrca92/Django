@@ -80,7 +80,10 @@ def new_listing(request):
         return render(request, "auctions/new_listing_saved.html")
 
     else:
-        return render(request, "auctions/new_listing.html")
+        #display new listing form
+        return render(request, "auctions/new_listing.html", {
+            "categories": Category.objects.all()
+        })
 
 def entry(request, title):
     entry = Listing.objects.get(name=title)

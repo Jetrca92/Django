@@ -1,9 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-
     <h2>Create Listing</h2>
-
     <form action="{% url 'new_listing' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
@@ -11,8 +9,13 @@
             <input autofocus class="form-control" type="text" name="title" placeholder="Title">
         </div>
         <div class="form-group">
-            <label>Category:</label>
-            <input autofocus class="form-control" type="text" name="category" placeholder="Category">
+            <label>Category:</label><br>
+            <select class="form-select" aria-label="Default select example">
+                <option selected>Select Category</option>
+                {% for category in categories %}                
+                <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+              </select>
         </div>
         <div class="form-group">
             <label>Description:</label>
@@ -23,7 +26,7 @@
             <input autofocus class="form-control" type="text" name="imgurl" placeholder="Paste your image URL here or leave empty if no image">
         </div>
         <div class="form-group">
-            <label>Price:</label>
+            <label>Price: (in €)</label>
             <input autofocus class="form-control" type="number" name="starting_bid" placeholder="Starting Bid">
             <p>Price must be inserted in integers without spaces or other characters. (Insert "1234500" instead of "1.234.500,00")
             </p>
