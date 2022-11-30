@@ -1,14 +1,15 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
-from .models import User, AuctionListings, Bids, Comments
+from .models import User, Category, Listing
 
 
 def index(request):
-    listings = AuctionListings.objects.all()
+    listings = Listing.objects.all()
     return render(request, "auctions/index.html", {
         "listings": listings
         })
@@ -74,7 +75,7 @@ def new_listing(request):
         description = request.POST['description']
         imgurl = request.POST['imgurl']
         price = request.POST['starting_bid']
-        ins = AuctionListings(name=name, category=category, description=description, imgurl=imgurl, price=price)
+        ins = Listing(name=name, category=category, description=description, imgurl=imgurl, price=price)
         ins.save()
         return render(request, "auctions/new_listing_saved.html")
 
@@ -82,7 +83,22 @@ def new_listing(request):
         return render(request, "auctions/new_listing.html")
 
 def entry(request, title):
-    entry = AuctionListings.objects.get(name=title)
+    entry = Listing.objects.get(name=title)
     return render(request, "auctions/entry.html", {
         "entry": entry
     })
+
+def watchlist_add(request, product_id):
+    pass
+    #if request.method == POST:
+        #item_to_save = get_object_or_404(Listing, pk=product_id)
+        # Check if the item already exists in that user watchlist
+        #if WatchList.objects.filter(user=request.user, item=product_id).exists():
+         #   messages.add_message(request, messages.ERROR, "You already have it in your watchlist.")
+          #  return HttpResponseRedirect(reverse("auctions:index"))
+        # Get the user watchlist or create it if it doesn't exists
+        #user_list, created = WatchList.objects.get_or_create(user=request.user)
+        # Add the item through the ManyToManyField (Watchlist => item)
+        #user_list.item.add(item_to_save)
+        #messages.add_message(request, messages.SUCCESS, "Successfully added to your watchlist")
+        #return render(request, "auctions/watchlist.html")

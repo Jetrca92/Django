@@ -2,6 +2,12 @@
 
 {% block body %}
     <h2>Listing: {{ entry.name }}</h2>
+    <div>
+        {% if user.is_authenticated %}
+            <a href="{% url 'watchlist_add' %}" role="button" class="btn btn-secondary btn-sm">Add to Watchlist</a>
+        {% else %}
+        {% endif %}
+    </div>
     <img src="{{ entry.imgurl }}" style="width: 600px; height: auto;">
     <p>{{ entry.description }}</p>
     <h2>${{ entry.price }}</h3>
