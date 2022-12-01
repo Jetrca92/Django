@@ -97,15 +97,24 @@ def new_listing(request):
         })
 
 def entry(request, title):
+    #render content for title provided
     entry = Listing.objects.get(name=title)
     return render(request, "auctions/entry.html", {
         "entry": entry
     })
 
-def category(request):
+def category_list(request):
+    #render list of categories
     categories = Category.objects.all()
-    return render(request, "auctions/category.html", {
+    return render(request, "auctions/category_list.html", {
         "categories": categories
+    })
+
+def category(request, title):
+    #render content for category provided
+    category = Category.objects.get(category_name=title)
+    return render(request, "auctions/category.html", {
+        "category": category
     })
 
 def watchlist_add(request, product_id):
