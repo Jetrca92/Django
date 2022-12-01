@@ -9,7 +9,7 @@ from .models import User, Category, Listing
 
 
 def index(request):
-    listings = Listing.objects.all()
+    listings = Listing.objects.filter(is_active=True)
     return render(request, "auctions/index.html", {
         "listings": listings
         })
@@ -69,13 +69,20 @@ def register(request):
 
 def new_listing(request):
     if request.method == "POST":
+        
         #save form data to db
         name = request.POST['title']
         category = request.POST['category']
         description = request.POST['description']
         imgurl = request.POST['imgurl']
         price = request.POST['starting_bid']
-        ins = Listing(name=name, category=category, description=description, imgurl=imgurl, price=price)
+
+        #get content of a particular category
+        category_data = Category.objects.get(category_name=category)
+        
+        #save user
+        current_user = request.user
+        ins = Listing(name=name, category=category_data, description=description, imgurl=imgurl, price=price, owner=current_user)
         ins.save()
         return render(request, "auctions/new_listing_saved.html")
 

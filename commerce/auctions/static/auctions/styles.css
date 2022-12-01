@@ -1,3 +1,14 @@
 body {
     padding: 10px;
+    background-color: black;
+}
+
+.listing {
+    display: flex;
+    border-radius: 1px;
+    border-color: black;
+}
+
+ul {
+    list-style-type: none;
 }
