@@ -75,6 +75,10 @@ def new_listing(request):
         category = request.POST['category']
         description = request.POST['description']
         imgurl = request.POST['imgurl']
+        
+        #if no url for img, assign default value
+        if imgurl == '':
+            imgurl = "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930"
         price = request.POST['starting_bid']
 
         #get content of a particular category
