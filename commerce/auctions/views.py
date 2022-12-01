@@ -102,6 +102,12 @@ def entry(request, title):
         "entry": entry
     })
 
+def category(request):
+    categories = Category.objects.all()
+    return render(request, "auctions/category.html", {
+        "categories": categories
+    })
+
 def watchlist_add(request, product_id):
     pass
     #if request.method == POST:
