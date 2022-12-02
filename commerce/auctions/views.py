@@ -119,6 +119,14 @@ def display_cat(request, title):
         "listings": listings
     })
 
+def user_adds(request, user):
+    #render page for adds by specific user
+    owner = User.objects.get(username=user)
+    user = Listing.objects.filter(is_active=True, owner=owner)
+    return render(request, "auctions/user_adds.html", {
+        "listings": user
+    })
+
 def watchlist_add(request, product_id):
     pass
     #if request.method == POST:

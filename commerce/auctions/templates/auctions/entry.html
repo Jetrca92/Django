@@ -13,6 +13,10 @@
     <img src="{{ entry.imgurl }}" style="width: 600px; height: auto;">
     <p>{{ entry.description }}</p>
     <h2>${{ entry.price }}</h2>
-    <h3>Category: {{ entry.category }}</h3>
+    <h3>Details:</h3>
+    <ul>
+        <li>Listed by: <a href="{% url 'user_adds' entry.owner %}">{{entry.owner }}</a></li>
+        <li>Category: {{entry.category }}</li>
+    </ul>
     
 {% endblock %}
