@@ -110,11 +110,13 @@ def category_list(request):
         "categories": categories
     })
 
-def category(request, title):
-    #render content for category provided
+def display_cat(request, title):
+    #render content for category provided    
     category = Category.objects.get(category_name=title)
-    return render(request, "auctions/category.html", {
-        "category": category
+    listings = Listing.objects.filter(is_active=True, category=category)
+    return render(request, "auctions/cat.html", {
+        "category": category,
+        "listings": listings
     })
 
 def watchlist_add(request, product_id):

@@ -1,7 +1,9 @@
 {% extends "auctions/layout.html" %}
 
+{% block title %}{{ category.category_name }}{% endblock %}
+
 {% block body %}
-    <h2>Active Listings</h2>
+    <h2>{{ category.category_name }}</h2>
     {% for listing in listings %}
         <div class="card mb-3" style="max-width: 540px;">
             <div class="row g-0">
@@ -21,4 +23,5 @@
     {% empty %}
     <h3>No listings.</h3>
     {% endfor %}
+    
 {% endblock %}
