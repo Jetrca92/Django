@@ -19,6 +19,7 @@ class Listing(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=10)
     is_active = models.BooleanField(default=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, related_name="user")
+    watchlist = models.ManyToManyField(User, blank=True, null=True, related_name="watchlist")
 
     def __str__(self):
         return self.name

@@ -4,19 +4,27 @@
 
 {% block body %}
     <h2>Listing: {{ entry.name }}</h2>
-    <div>
+    <div class="mx-3">
         {% if user.is_authenticated %}
-            <a href="{% url 'watchlist_add' %}" role="button" class="btn btn-secondary btn-sm">Add to Watchlist</a>
-        {% else %}
+            {% if is_in_watchlist %}
+            <form action="{% url 'watchlist_remove' id=entry.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-secondary btn-sm">Remove from Watchlist</button>
+            </form>
+            {% else %}
+            <form action="{% url 'watchlist_add' id=entry.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-secondary btn-sm">Add to Watchlist</button>
+            </form>
+            {% endif %}
         {% endif %}
     </div>
     <img src="{{ entry.imgurl }}" style="width: 600px; height: auto;">
     <p>{{ entry.description }}</p>
-    <h2>${{ entry.price }}</h2>
+    <h3>{{ entry.price }} €</h3>
     <h3>Details:</h3>
     <ul>
         <li>Listed by: <a href="{% url 'user_adds' entry.owner %}">{{entry.owner }}</a></li>
-        <li>Category: {{entry.category }}</li>
+        <li>Category: <a href="{% url 'display_cat' entry.category %}">{{entry.category }}</a></li>
     </ul>
-    
 {% endblock %}

@@ -142,4 +142,9 @@ def watchlist_remove(request, id):
     listing.watchlist.remove(user)
     return HttpResponseRedirect(reverse("entry", args=(listing.name, )))
 
-def watchlist
+def watchlist(request):
+    user= request.user
+    items = Listing.objects.filter(watchlist=user)
+    return render(request, "auctions/watchlist.html", {
+        "items": items
+    })
