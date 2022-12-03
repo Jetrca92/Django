@@ -99,8 +99,11 @@ def new_listing(request):
 def entry(request, title):
     #render content for title provided
     entry = Listing.objects.get(name=title)
+    is_in_watchlist = request.user in entry.watchlist.all()
     return render(request, "auctions/entry.html", {
-        "entry": entry
+        "entry": entry,
+        "is_in_watchlist": is_in_watchlist
+
     })
 
 def category_list(request):
@@ -127,17 +130,16 @@ def user_adds(request, user):
         "listings": user
     })
 
-def watchlist_add(request, product_id):
-    pass
-    #if request.method == POST:
-        #item_to_save = get_object_or_404(Listing, pk=product_id)
-        # Check if the item already exists in that user watchlist
-        #if WatchList.objects.filter(user=request.user, item=product_id).exists():
-         #   messages.add_message(request, messages.ERROR, "You already have it in your watchlist.")
-          #  return HttpResponseRedirect(reverse("auctions:index"))
-        # Get the user watchlist or create it if it doesn't exists
-        #user_list, created = WatchList.objects.get_or_create(user=request.user)
-        # Add the item through the ManyToManyField (Watchlist => item)
-        #user_list.item.add(item_to_save)
-        #messages.add_message(request, messages.SUCCESS, "Successfully added to your watchlist")
-        #return render(request, "auctions/watchlist.html")
+def watchlist_add(request, id):
+    listing = Listing.objects.get(pk=id)
+    user = request.user
+    listing.watchlist.add(user)
+    return HttpResponseRedirect(reverse("entry", args=(listing.name, )))
+
+def watchlist_remove(request, id):
+    listing = Listing.objects.get(pk=id)
+    user = request.user
+    listing.watchlist.remove(user)
+    return HttpResponseRedirect(reverse("entry", args=(listing.name, )))
+
+def watchlist
