@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
-from .models import User, Category, Listing
+from .models import User, Category, Listing, Comment
 
 
 def index(request):
@@ -131,20 +131,35 @@ def user_adds(request, user):
     })
 
 def watchlist_add(request, id):
+    #adds item to users watchlist
     listing = Listing.objects.get(pk=id)
     user = request.user
     listing.watchlist.add(user)
     return HttpResponseRedirect(reverse("entry", args=(listing.name, )))
 
 def watchlist_remove(request, id):
+    #removes item from users watchlist
     listing = Listing.objects.get(pk=id)
     user = request.user
     listing.watchlist.remove(user)
     return HttpResponseRedirect(reverse("entry", args=(listing.name, )))
 
 def watchlist(request):
+    #render watchlist page
     user= request.user
     items = Listing.objects.filter(watchlist=user)
     return render(request, "auctions/watchlist.html", {
         "items": items
     })
+
+def comment(request):
+    #saves comment to comment model
+    if request.method == "POST":
+        id = request.POST['id']
+        listing = Listing.objects.get(pk=id)
+        user = request.user
+        comment = request.POST['comment']
+        ins = Comment(author=user, listing=listing, message=comment)
+        ins.save()
+        return HttpResponseRedirect(reverse("entry", args=(listing.name, )))
+

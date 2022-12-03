@@ -7,12 +7,12 @@
     <div class="mx-3">
         {% if user.is_authenticated %}
             {% if is_in_watchlist %}
-            <form action="{% url 'watchlist_remove' id=entry.id %}" method="POST">
+            <form action="{% url 'watchlist_remove' entry.id %}" method="POST">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-secondary btn-sm">Remove from Watchlist</button>
             </form>
             {% else %}
-            <form action="{% url 'watchlist_add' id=entry.id %}" method="POST">
+            <form action="{% url 'watchlist_add' entry.id %}" method="POST">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-secondary btn-sm">Add to Watchlist</button>
             </form>
@@ -27,4 +27,12 @@
         <li>Listed by: <a href="{% url 'user_adds' entry.owner %}">{{entry.owner }}</a></li>
         <li>Category: <a href="{% url 'display_cat' entry.category %}">{{entry.category }}</a></li>
     </ul>
+    <div class="form-group">
+        <form action="{% url 'comment' %}" method="POST">
+            {% csrf_token %}
+            <label>Add a Comment:</label>
+            <input type="hidden" name="id" value="{{ entry.id }}">
+            <p><textarea type="text" class="form-control" rows="5" name="comment" placeholder="Type your comment here"></textarea></p>
+            <input class="btn btn-primary" type="submit" value="Submit">
+    </div>
 {% endblock %}

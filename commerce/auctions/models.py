@@ -24,4 +24,9 @@ class Listing(models.Model):
     def __str__(self):
         return self.name
 
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, related_name="author")
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, related_name="listing")
+    message = models.CharField(max_length=256)
+
 
