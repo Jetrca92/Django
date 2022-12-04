@@ -27,12 +27,23 @@
         <li>Listed by: <a href="{% url 'user_adds' entry.owner %}">{{entry.owner }}</a></li>
         <li>Category: <a href="{% url 'display_cat' entry.category %}">{{entry.category }}</a></li>
     </ul>
+    <h2>Comments</h2>
     <div class="form-group">
-        <form action="{% url 'comment' %}" method="POST">
-            {% csrf_token %}
-            <label>Add a Comment:</label>
-            <input type="hidden" name="id" value="{{ entry.id }}">
-            <p><textarea type="text" class="form-control" rows="5" name="comment" placeholder="Type your comment here"></textarea></p>
-            <input class="btn btn-primary" type="submit" value="Submit">
+        {% if user.is_authenticated %}
+            <form action="{% url 'comment' %}" method="POST">
+                {% csrf_token %}
+                <label>Add a Comment:</label>
+                <input type="hidden" name="id" value="{{ entry.id }}">
+                <p><textarea type="text" class="form-control" rows="5" name="comment" placeholder="Type your comment here"></textarea></p>
+                <input class="btn btn-primary" type="submit" value="Submit">
+        {% endif %}
     </div>
+    <ul class="list-group list-group-flush">
+        {% for comment in comments %}
+            <li class="list-group-item"><a href="{% url 'user_adds' comment.author %}">{{ comment.author }}:</a><br>{{ comment.message }}</li>
+        {% empty %}
+            <li class="list-group-item">No comments.</li>
+        {% endfor %}
+      </ul>
+    <ul>
 {% endblock %}

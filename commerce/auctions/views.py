@@ -100,9 +100,11 @@ def entry(request, title):
     #render content for title provided
     entry = Listing.objects.get(name=title)
     is_in_watchlist = request.user in entry.watchlist.all()
+    comments = Comment.objects.filter(listing=entry)
     return render(request, "auctions/entry.html", {
         "entry": entry,
-        "is_in_watchlist": is_in_watchlist
+        "is_in_watchlist": is_in_watchlist,
+        "comments": comments
 
     })
 
@@ -127,7 +129,8 @@ def user_adds(request, user):
     owner = User.objects.get(username=user)
     user = Listing.objects.filter(is_active=True, owner=owner)
     return render(request, "auctions/user_adds.html", {
-        "listings": user
+        "listings": user,
+        "owner": owner
     })
 
 def watchlist_add(request, id):

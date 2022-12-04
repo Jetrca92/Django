@@ -1,9 +1,9 @@
 {% extends "auctions/layout.html" %}
 
-{% block title %}{{ listing.owner }}{% endblock %}
+{% block title %}{{ owner }}'s listings{% endblock %}
 
 {% block body %}
-    <h2>Listings by: {{ listing.owner }}</h2>
+    <h2>Listings by: {{ owner }}</h2>
     {% for listing in listings %}
         <div class="card mb-3" style="max-width: 540px;">
             <div class="row g-0">
