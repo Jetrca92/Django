@@ -29,4 +29,7 @@ class Comment(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, related_name="listing")
     message = models.CharField(max_length=256)
 
+class Bid(models.Model):
+    pass
+
 
