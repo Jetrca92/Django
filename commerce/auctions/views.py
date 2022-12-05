@@ -83,10 +83,12 @@ def new_listing(request):
 
         #get content of a particular category
         category_data = Category.objects.get(category_name=category)
-        
-        #save user
+
+        #save bid and user
         current_user = request.user
-        ins = Listing(name=name, category=category_data, description=description, imgurl=imgurl, price=price, owner=current_user)
+        bid = Bid(bid=float(price), user=current_user)
+        bid.save()
+        ins = Listing(name=name, category=category_data, description=description, imgurl=imgurl, price=bid, owner=current_user)
         ins.save()
         return render(request, "auctions/new_listing_saved.html")
 
@@ -166,3 +168,31 @@ def comment(request):
         ins.save()
         return HttpResponseRedirect(reverse("entry", args=(listing.name, )))
 
+def new_bid(request, id):
+    if request.method == "POST":
+        #get data
+        new_bid = int(request.POST['bid'])
+        user = request.user
+        entry = Listing.objects.get(pk=id)
+        is_in_watchlist = request.user in entry.watchlist.all()
+        comments = Comment.objects.filter(listing=entry)
+        #if new bid valid, update data
+        if new_bid > entry.price.bid:
+            update_bid = Bid(user=user, bid=new_bid)
+            update_bid.save()
+            entry.price = update_bid
+            entry.save()
+            return render(request, "auctions/entry.html", {
+                "entry": entry,
+                "is_in_watchlist": is_in_watchlist,
+                "comments": comments
+            })
+        else:
+            #if new bid invalid, render error
+            return render(request, "auctions/error.html", {
+                "entry": entry
+            })
+
+def close_bid(request, id):
+    return
+        

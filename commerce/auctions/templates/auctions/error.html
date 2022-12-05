@@ -1,0 +1,10 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>Error!</h2>
+    <p>The bid is not as large as the starting bid or is not greater than any other bids that have been placed.</p>
+    <a href="{% url 'entry' entry.name %}" class="mx-3">Back</a>
+
+
+{% endblock %}

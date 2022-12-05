@@ -21,7 +21,27 @@
     </div>
     <img src="{{ entry.imgurl }}" style="width: 600px; height: auto;">
     <p>{{ entry.description }}</p>
-    <h3>{{ entry.price }} €</h3>
+    <h2>{{ entry.price }} €</h2>
+    {% if user.is_authenticated %}
+        <span>{{ entry.price.bid }}€ bid placed by {{ entry.price.user }}</span>
+        <form action="{% url 'new_bid' entry.id %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <input class="form-control" type="number" min="0" name="bid" placeholder="Bid">
+                <p>Bid must be inserted in integers without spaces or other characters. (Insert "1234500" instead of "1.234.500,00")
+                </p>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Place Bid">
+        </form>
+    {% endif %}
+    {% if user.is_authenticated and user == entry.owner %}
+        <form action="{% url 'close_bid' entry.id %}" method="POST">
+            {% csrf_token %}
+            <input class="form-control" type="hidden" name="close_bid" value="close">
+            <input class="btn btn-primary" type="submit" value="Close Auction">
+        </form>
+    {% endif %}
+        <br>
     <h3>Details:</h3>
     <ul>
         <li>Listed by: <a href="{% url 'user_adds' entry.owner %}">{{entry.owner }}</a></li>

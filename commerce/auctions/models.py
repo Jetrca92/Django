@@ -11,12 +11,19 @@ class Category(models.Model):
     def __str__(self):
         return self.category_name
 
+class Bid(models.Model):
+    bid = models.DecimalField(decimal_places=2, max_digits=10)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, related_name="user_bid")
+
+    def __str__(self):
+        return str(self.bid)
+
 class Listing(models.Model):
     name = models.CharField(max_length=64)
     description = models.CharField(max_length=256)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True, related_name="category")
     imgurl = models.CharField(max_length=512, default="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg")
-    price = models.DecimalField(decimal_places=2, max_digits=10)
+    price = models.ForeignKey(Bid, on_delete=models.CASCADE, blank=True, null=True, related_name="price")
     is_active = models.BooleanField(default=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, related_name="user")
     watchlist = models.ManyToManyField(User, blank=True, null=True, related_name="watchlist")
@@ -29,7 +36,6 @@ class Comment(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, related_name="listing")
     message = models.CharField(max_length=256)
 
-class Bid(models.Model):
-    pass
+
 
 
