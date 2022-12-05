@@ -194,5 +194,15 @@ def new_bid(request, id):
             })
 
 def close_bid(request, id):
-    return
+    if request.method == "POST":
+        entry = Listing.objects.get(pk=id)
+        close = request.POST['close_bid']
+        if close:
+            entry.is_active = False
+            entry.save()
+            return render(request, "auctions/closed.html", {
+                "entry": entry
+            })
+        else:
+            pass
         

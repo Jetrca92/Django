@@ -1,0 +1,10 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>Auction closed!</h2>
+    <p>{{ entry.price.user }} won the auction with the bid of {{ entry.price.bid}}€. </p>
+    <a href="{% url 'index' %}" class="mx-3">Back to homepage</a>
+
+
+{% endblock %}

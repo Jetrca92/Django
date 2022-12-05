@@ -22,8 +22,8 @@
     <img src="{{ entry.imgurl }}" style="width: 600px; height: auto;">
     <p>{{ entry.description }}</p>
     <h2>{{ entry.price }} €</h2>
-    {% if user.is_authenticated %}
-        <span>{{ entry.price.bid }}€ bid placed by {{ entry.price.user }}</span>
+    <span>{{ entry.price.bid }}€ bid placed by {{ entry.price.user }}</span>
+    {% if user.is_authenticated and user != entry.owner %}
         <form action="{% url 'new_bid' entry.id %}" method="POST">
             {% csrf_token %}
             <div class="form-group">
