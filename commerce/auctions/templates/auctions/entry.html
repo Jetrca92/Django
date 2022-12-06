@@ -3,6 +3,9 @@
 {% block title %}{{ entry.name }}{% endblock %}
 
 {% block body %}
+{% if user.is_authenticated and user == entry.owner and entry.is_active == False %}
+    <h1>Congratulations! You've won the auction!</h1>
+{% endif %}
     <h2>Listing: {{ entry.name }}</h2>
     <div class="mx-3">
         {% if user.is_authenticated %}
@@ -22,8 +25,13 @@
     <img src="{{ entry.imgurl }}" style="width: 600px; height: auto;">
     <p>{{ entry.description }}</p>
     <h2>{{ entry.price }} €</h2>
-    <span>{{ entry.price.bid }}€ bid placed by {{ entry.price.user }}</span>
-    {% if user.is_authenticated and user != entry.owner %}
+    {% if entry.price.user == entry.owner %}
+        <span>{{ entry.price.bid }}€ starting bid price listed by {{ entry.price.user }}</span>
+    
+    {% else %}
+        <span>{{ entry.price.bid }}€ bid placed by {{ entry.price.user }}</span>
+    {% endif %}
+    {% if user.is_authenticated and user != entry.owner and entry.is_active %}
         <form action="{% url 'new_bid' entry.id %}" method="POST">
             {% csrf_token %}
             <div class="form-group">
@@ -34,7 +42,7 @@
             <input class="btn btn-primary" type="submit" value="Place Bid">
         </form>
     {% endif %}
-    {% if user.is_authenticated and user == entry.owner %}
+    {% if user.is_authenticated and user == entry.owner and entry.is_active %}
         <form action="{% url 'close_bid' entry.id %}" method="POST">
             {% csrf_token %}
             <input class="form-control" type="hidden" name="close_bid" value="close">

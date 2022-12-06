@@ -174,6 +174,7 @@ def new_bid(request, id):
         new_bid = int(request.POST['bid'])
         user = request.user
         entry = Listing.objects.get(pk=id)
+        entry.watchlist.add(user)
         is_in_watchlist = request.user in entry.watchlist.all()
         comments = Comment.objects.filter(listing=entry)
         #if new bid valid, update data
@@ -195,10 +196,13 @@ def new_bid(request, id):
 
 def close_bid(request, id):
     if request.method == "POST":
+        #get data
         entry = Listing.objects.get(pk=id)
         close = request.POST['close_bid']
         if close:
+            #change owner and active status
             entry.is_active = False
+            entry.owner = entry.price.user
             entry.save()
             return render(request, "auctions/closed.html", {
                 "entry": entry
