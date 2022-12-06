@@ -6,3 +6,18 @@ and add listings to a “watchlist.”
 
 The page is a commerce site for selling used videogames. 
 
+## Index page
+
+![Index page](active_listings.jpg)
+
+
+
+## Create listing page
+
+![Create listing page](create_listing.jpg)
+
+
+
+## Entry page
+
+![Entry page](entry_page.jpg)
