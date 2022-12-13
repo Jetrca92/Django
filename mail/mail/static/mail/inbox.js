@@ -48,10 +48,10 @@ function load_mailbox(mailbox) {
   .then(response => response.json())
   .then(emails => {
     // Print emails
-    console.log(emails);
+    
 
     // ... do something else with emails ...
-    
+    emails.forEach(element => console.log(element))
 });
 }
 
