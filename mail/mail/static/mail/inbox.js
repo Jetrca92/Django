@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   });
 
+  // Go to email-view when click on email
+  
+
   // By default, load the inbox
   load_mailbox('inbox');
 });
@@ -25,6 +28,7 @@ function compose_email() {
 
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
 
   // Clear out composition fields
@@ -38,6 +42,7 @@ function load_mailbox(mailbox) {
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'none';
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
@@ -89,12 +94,43 @@ function display_email(emails) {
   const li = document.createElement('li');
 
   // Set different css to .read if true/false
-  if (li.read) {
+  if (emails.read) {
     li.setAttribute("class", "list-group-item");
   }
   else {
     li.setAttribute("class", "list-group-item active");
   }  
   li.innerHTML = `<b>${emails.sender}</b>  ${emails.subject}   ${emails.timestamp}`;
+  li.setAttribute("style", "cursor: pointer")
+  li.addEventListener('click', function() {
+    console.log('This element has been clicked!');
+    view_email(emails);
+  });
   document.querySelector('.list-group').append(li);
+}
+
+function view_email(emails) {
+
+  // Show the email and hide other views
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'block';
+
+  //Append ul element with bootstraps class
+  const ul = document.createElement('ul');
+  ul.setAttribute("class", "list-group list-group-flush");
+  ul.setAttribute("id", "head");
+  document.querySelector('#email-view').append(ul);
+
+  const head = document.createElement('li');
+  head.setAttribute("class", "list-group-item");
+  head.innerHTML = `<b>From: </b>${emails.sender}<br>
+  <b>To: </b>${emails.recipients}<br>
+  <b>Subject: </b>${emails.subject}<br>
+  <b>Timestamp: </b>${emails.timestamp}<br>
+  <p><button class="btn btn-sm btn-outline-primary" id="reply">Reply</button></p>`
+  document.querySelector('#head').append(head);
+
+
+
 }
