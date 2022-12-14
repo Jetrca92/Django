@@ -7,9 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#compose').addEventListener('click', compose_email);
 
   // Submit handler
-  // add event as an argument
   document.querySelector('#compose-form').addEventListener('submit', (event) => {
-    event.preventDefault(); // add this line
+    event.preventDefault(); // prevent load
 
     // and then do your stuff
     send_email();
@@ -17,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     return false;
 
   });
-  load_mailbox('sent');
+
   // By default, load the inbox
   load_mailbox('inbox');
 });
@@ -80,7 +79,22 @@ function send_email() {
 }
 
 function display_email(emails) {
-  const div = document.createElement('div');
-  div.innerHTML = `<b>${emails.sender}</b>  ${emails.subject}   ${emails.timestamp}`;
-  document.querySelector('#emails-view').append(div);
+  
+  // Append ul element with bootstraps class
+  const ul = document.createElement('ul');
+  ul.setAttribute("class", "list-group");
+  document.querySelector('#emails-view').append(ul);
+
+  // Append li elements for each email with bootstraps class
+  const li = document.createElement('li');
+
+  // Set different css to .read if true/false
+  if (li.read) {
+    li.setAttribute("class", "list-group-item");
+  }
+  else {
+    li.setAttribute("class", "list-group-item active");
+  }  
+  li.innerHTML = `<b>${emails.sender}</b>  ${emails.subject}   ${emails.timestamp}`;
+  document.querySelector('.list-group').append(li);
 }
