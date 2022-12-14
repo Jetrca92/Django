@@ -89,6 +89,7 @@ function display_email(emails) {
   const ul = document.createElement('ul');
   ul.setAttribute("class", "list-group");
   document.querySelector('#emails-view').append(ul);
+  const email_id = emails.id;
 
   // Append li elements for each email with bootstraps class
   const li = document.createElement('li');
@@ -99,37 +100,56 @@ function display_email(emails) {
   }
   else {
     li.setAttribute("class", "list-group-item active");
-  }  
+  }
+  
+  // Display clickable list of emails
   li.innerHTML = `<b>${emails.sender}</b>  ${emails.subject}   ${emails.timestamp}`;
   li.setAttribute("style", "cursor: pointer")
   li.addEventListener('click', function() {
-    console.log('This element has been clicked!');
-    view_email(emails);
+    
+    view_email(email_id);
   });
   document.querySelector('.list-group').append(li);
 }
 
-function view_email(emails) {
+function view_email(email_id) {
 
   // Show the email and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'none';
   document.querySelector('#email-view').style.display = 'block';
 
-  //Append ul element with bootstraps class
-  const ul = document.createElement('ul');
-  ul.setAttribute("class", "list-group list-group-flush");
-  ul.setAttribute("id", "head");
-  document.querySelector('#email-view').append(ul);
+  // GET request of email by id
+  fetch(`/emails/${email_id}`)
+  .then(response => response.json())
+  .then(email => {
+    // Print email
+    console.log(email);
 
-  const head = document.createElement('li');
-  head.setAttribute("class", "list-group-item");
-  head.innerHTML = `<b>From: </b>${emails.sender}<br>
-  <b>To: </b>${emails.recipients}<br>
-  <b>Subject: </b>${emails.subject}<br>
-  <b>Timestamp: </b>${emails.timestamp}<br>
-  <p><button class="btn btn-sm btn-outline-primary" id="reply">Reply</button></p>`
-  document.querySelector('#head').append(head);
+    // ... do something else with email ...
+    // Append ul element with bootstraps class
+    const ul = document.createElement('ul');
+    ul.setAttribute("class", "list-group list-group-flush");
+    ul.setAttribute("id", "head");
+    document.querySelector('#email-view').append(ul);
+
+    // Display head of an email
+    const head = document.createElement('li');
+    head.setAttribute("class", "list-group-item");
+    head.innerHTML = `<b>From: </b>${email.sender}<br>
+    <b>To: </b>${email.recipients}<br>
+    <b>Subject: </b>${email.subject}<br>
+    <b>Timestamp: </b>${email.timestamp}<br>
+    <p><button class="btn btn-sm btn-outline-primary" id="reply">Reply</button></p>`
+    document.querySelector('#head').append(head);
+
+    // Display body of an email
+    const body = document.createElement('li');
+    body.setAttribute("class", "list-group-item");
+    body.innerHTML = `${email.body}`;
+    document.querySelector('#head').append(body);
+  });
+  
 
 
 
