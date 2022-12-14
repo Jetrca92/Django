@@ -48,12 +48,13 @@ function load_mailbox(mailbox) {
   .then(response => response.json())
   .then(emails => {
     // Print emails
-    
+    console.log(emails)
 
     // ... do something else with emails ...
-    emails.forEach(element => console.log(element))
-});
-}
+    emails.forEach(display_email);
+    });
+  }
+
 
 function send_email() {
   
@@ -75,9 +76,11 @@ function send_email() {
   .then(result => {
       // Print result
       console.log(result);
-  });
-  
+  });   
+}
 
-
-  
+function display_email(emails) {
+  const div = document.createElement('div');
+  div.innerHTML = `<b>${emails.sender}</b>  ${emails.subject}   ${emails.timestamp}`;
+  document.querySelector('#emails-view').append(div);
 }
