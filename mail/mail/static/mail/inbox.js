@@ -130,6 +130,16 @@ function view_email(email) {
     ul.setAttribute("id", "head");
     document.querySelector('#email-view').append(ul);
 
+    // Display Archive / Unarchive button
+    const p = document.createElement('p');
+    if (!email.archived) {
+      p.innerHTML = '<p><button class="btn btn-sm btn-outline-primary" id="archive">Archive</button></p>';
+    }
+    else {
+      p.innerHTML = '<p><button class="btn btn-sm btn-outline-primary" id="archive">Unarchive</button></p>';
+    }
+    document.querySelector('#head').append(p);
+
     // Display head of an email
     const head = document.createElement('li');
     head.setAttribute("class", "list-group-item");
@@ -148,15 +158,36 @@ function view_email(email) {
   });
     //Clear previous emails from innerHTML
     document.querySelector('#head').innerHTML = '';
-    
+
     // Change to read
     fetch(`/emails/${email.id}`, {
     method: 'PUT',
     body: JSON.stringify({
       read: true
+    })
   })
-  
-})
 
+    // Archieve / Remove from the Archieve button
+    document.querySelector('#archive').onclick = archive(email);
+}
 
+function archive(email) {
+  email = email
+  if (email.archive) {
+    fetch(`/emails/${email.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        archive: false
+      })
+    })
+  }
+  else {
+    fetch(`/emails/${email.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        archive: true
+      })
+    })
+  }
+  view_email(email);
 }
