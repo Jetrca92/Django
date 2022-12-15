@@ -17,9 +17,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   });
 
-  // Go to email-view when click on email
-  
-
   // By default, load the inbox
   load_mailbox('inbox');
 });
@@ -51,11 +48,12 @@ function load_mailbox(mailbox) {
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
-    // Print emails
-    console.log(emails)
 
-    // ... do something else with emails ...
-    emails.forEach(display_email);
+    // Display each email
+    emails.forEach(email => {
+      console.log(email);
+      display_email(email);
+    });
     });
   }
 
@@ -83,19 +81,18 @@ function send_email() {
   });   
 }
 
-function display_email(emails) {
+function display_email(email) {
   
   // Append ul element with bootstraps class
   const ul = document.createElement('ul');
   ul.setAttribute("class", "list-group");
   document.querySelector('#emails-view').append(ul);
-  const email_id = emails.id;
 
   // Append li elements for each email with bootstraps class
   const li = document.createElement('li');
 
   // Set different css to .read if true/false
-  if (emails.read) {
+  if (email.read) {
     li.setAttribute("class", "list-group-item");
   }
   else {
@@ -103,16 +100,16 @@ function display_email(emails) {
   }
   
   // Display clickable list of emails
-  li.innerHTML = `<b>${emails.sender}</b>  ${emails.subject}   ${emails.timestamp}`;
+  li.innerHTML = `<b>${email.sender}</b>  ${email.subject}   ${email.timestamp}`;
   li.setAttribute("style", "cursor: pointer")
   li.addEventListener('click', function() {
     
-    view_email(email_id);
+    view_email(email);
   });
   document.querySelector('.list-group').append(li);
 }
 
-function view_email(email_id) {
+function view_email(email) {
 
   // Show the email and hide other views
   document.querySelector('#emails-view').style.display = 'none';
@@ -120,7 +117,7 @@ function view_email(email_id) {
   document.querySelector('#email-view').style.display = 'block';
 
   // GET request of email by id
-  fetch(`/emails/${email_id}`)
+  fetch(`/emails/${email.id}`)
   .then(response => response.json())
   .then(email => {
     // Print email
@@ -149,8 +146,17 @@ function view_email(email_id) {
     body.innerHTML = `${email.body}`;
     document.querySelector('#head').append(body);
   });
+    //Clear previous emails from innerHTML
+    document.querySelector('#head').innerHTML = '';
+    
+    // Change to read
+    fetch(`/emails/${email.id}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      read: true
+  })
   
-
+})
 
 
 }
