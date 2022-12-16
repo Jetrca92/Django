@@ -101,15 +101,13 @@ function display_email(email) {
   
   // Display clickable list of emails
   li.innerHTML = `<b>${email.sender}</b>  ${email.subject}   ${email.timestamp}`;
-  //li.setAttribute("style", "cursor: auto"); ???
-  li.addEventListener('click', function() {
-    
+  li.addEventListener('click', function() {    
     view_email(email);
   });
   document.querySelector('.list-group').append(li);
 }
 
-function view_email(email) {
+  function view_email(email) {
 
   // Show the email and hide other views
   document.querySelector('#emails-view').style.display = 'none';
@@ -120,31 +118,21 @@ function view_email(email) {
   fetch(`/emails/${email.id}`)
   .then(response => response.json())
   .then(email => {
-    // Print email
-    console.log(email);
 
-    // ... do something else with email ...
-    // Append ul element with bootstraps class
-    const ul = document.createElement('ul');
-    ul.setAttribute("class", "list-group list-group-flush");
-    ul.setAttribute("id", "head");
-    document.querySelector('#email-view').append(ul);
-
-    // Display head of an email
-    const head = document.createElement('li');
-    head.setAttribute("class", "list-group-item");
-    head.innerHTML = `<b>From: </b>${email.sender}<br>
-    <b>To: </b>${email.recipients}<br>
-    <b>Subject: </b>${email.subject}<br>
-    <b>Timestamp: </b>${email.timestamp}<br>
-    <p><button class="btn btn-sm btn-outline-primary" id="reply">Reply</button></p>`
-    document.querySelector('#head').append(head);
-
-    // Display body of an email
-    const body = document.createElement('li');
-    body.setAttribute("class", "list-group-item");
-    body.innerHTML = `${email.body}`;
-    document.querySelector('#head').append(body);
+    // Display email
+    document.querySelector("#email-view").innerHTML = `
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <b>From: </b>${email.sender}<br>
+        <b>To: </b>${email.recipients}<br>
+        <b>Subject: </b>${email.subject}<br>
+        <b>Timestamp: </b>${email.timestamp}<br>
+        <p><button class="btn btn-sm btn-outline-primary" id="reply">Reply</button></p>
+      </li>
+      <li class="list-group-item">
+        ${email.body}
+      </li>      
+    </ul>`    
   });
     
     // Change to read
@@ -156,16 +144,14 @@ function view_email(email) {
   })
 
     // Archieve / Remove from the Archieve button
-    const p = document.createElement('button');
-    p.setAttribute("class", "btn btn-sm btn-outline-primary")
-    p.innerHTML = email.archived ? "Unarchive" : "Archive"
-    p.addEventListener('click', function() {
+    const btn_archive = document.createElement('button');
+    btn_archive.setAttribute("class", "btn btn-sm btn-outline-primary");
+    btn_archive.innerHTML = email.archived ? "Unarchive" : "Archive";
+    btn_archive.addEventListener('click', function() {
       console.log('clicked!');
-    })
-    document.querySelector('#head').append(p);
-
-    //Clear previous emails from innerHTML
-    document.querySelector('#head').innerHTML = '';
+    });
+    //document.querySelector("#email-view").append(btn_archive);
+ 
     
 }
 
