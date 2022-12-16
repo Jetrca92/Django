@@ -93,15 +93,15 @@ function display_email(email) {
 
   // Set different css to .read if true/false
   if (email.read) {
-    li.setAttribute("class", "list-group-item");
+    li.setAttribute("class", "list-group-item clickable");
   }
   else {
-    li.setAttribute("class", "list-group-item active");
+    li.setAttribute("class", "list-group-item active clickable");
   }
   
   // Display clickable list of emails
   li.innerHTML = `<b>${email.sender}</b>  ${email.subject}   ${email.timestamp}`;
-  li.setAttribute("style", "cursor: pointer")
+  //li.setAttribute("style", "cursor: auto"); ???
   li.addEventListener('click', function() {
     
     view_email(email);
@@ -130,16 +130,6 @@ function view_email(email) {
     ul.setAttribute("id", "head");
     document.querySelector('#email-view').append(ul);
 
-    // Display Archive / Unarchive button
-    const p = document.createElement('p');
-    if (!email.archived) {
-      p.innerHTML = '<p><button class="btn btn-sm btn-outline-primary" id="archive">Archive</button></p>';
-    }
-    else {
-      p.innerHTML = '<p><button class="btn btn-sm btn-outline-primary" id="archive">Unarchive</button></p>';
-    }
-    document.querySelector('#head').append(p);
-
     // Display head of an email
     const head = document.createElement('li');
     head.setAttribute("class", "list-group-item");
@@ -156,9 +146,7 @@ function view_email(email) {
     body.innerHTML = `${email.body}`;
     document.querySelector('#head').append(body);
   });
-    //Clear previous emails from innerHTML
-    document.querySelector('#head').innerHTML = '';
-
+    
     // Change to read
     fetch(`/emails/${email.id}`, {
     method: 'PUT',
@@ -168,7 +156,17 @@ function view_email(email) {
   })
 
     // Archieve / Remove from the Archieve button
-    document.querySelector('#archive').onclick = archive(email);
+    const p = document.createElement('button');
+    p.setAttribute("class", "btn btn-sm btn-outline-primary")
+    p.innerHTML = email.archived ? "Unarchive" : "Archive"
+    p.addEventListener('click', function() {
+      console.log('clicked!');
+    })
+    document.querySelector('#head').append(p);
+
+    //Clear previous emails from innerHTML
+    document.querySelector('#head').innerHTML = '';
+    
 }
 
 function archive(email) {

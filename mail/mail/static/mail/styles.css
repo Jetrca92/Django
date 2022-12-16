@@ -2,6 +2,6 @@ textarea {
     min-height: 400px;
 }
 
-.list-group-item {
+.clickable {
     cursor: pointer;
 }
