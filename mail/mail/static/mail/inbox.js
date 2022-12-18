@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // and then do your stuff
     send_email();
-    load_mailbox('sent');
     return false;
 
   });
@@ -74,11 +73,13 @@ function send_email() {
       body: body
     })
   })
-    .then(response => response.json())
-    .then(result => {
-      // Print result
-      console.log(result);
-    });
+  .then(response => response.json())
+  .then(result => {
+    // Print result
+    console.log(result);
+  })
+  // Load sent
+  .then(() => { load_mailbox('sent')});  
 }
 
 function display_email(email) {
@@ -133,6 +134,12 @@ function view_email(email) {
           ${email.body}
         </li>      
       </ul>`
+
+      // Reply handler
+      document.querySelector('#reply').addEventListener('click', () => {
+        reply_email(email);
+      });
+
       // Archieve / Unarchieve button
       const btn_archive = document.createElement('button');
       btn_archive.setAttribute("class", "btn btn-sm btn-outline-primary");
@@ -154,6 +161,8 @@ function view_email(email) {
 }
 
 function archive(email) {
+
+  // Archive/Unarchive mail
   fetch(`/emails/${email.id}`, {
     method: 'PUT',
     body: JSON.stringify({
@@ -161,4 +170,21 @@ function archive(email) {
     })
   })
   .then(() => { load_mailbox('inbox')})  
+}
+
+function reply_email(email) {
+
+  // Show compose view and hide other views
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'none';
+  document.querySelector('#compose-view').style.display = 'block';
+
+  // Fill out composition fields
+  document.querySelector('#compose-recipients').value = email.sender;
+  let subject = email.subject;
+  if (subject.split(' ', 1)[0] != "Re:") {
+    subject = "Re: " + email.subject;
+  }
+  document.querySelector('#compose-subject').value = subject;
+  document.querySelector('#compose-body').value = `On ${email.timestamp} ${email.sender} wrote: ${email.body}`;
 }
