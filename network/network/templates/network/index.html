@@ -2,22 +2,23 @@
 
 {% block body %}
     <h2>All posts</h2>
-    <form action="{% url 'index' %}" method="post" role="form" class="row gy-3 gx-3">
-        {% csrf_token %}
-        <div class="mb-3">
-            <label for="new_post" class="form-label"><h2>New post:</h2></label>
-            <input autocomplete="off" class="form-control" id="new_post" name="new_post" placeholder="Write your new post here ..." type="text">
-        </div>
-            <input class="btn btn-primary w-auto mx-auto mb-3" type="submit" value="Post">        
-    </form>
-
-    
-    {% for post in posts %}
-    <ul>
-        <li>{{ post.author.username }}</li>
-        <li>{{ post.content }}<li>
-        <li>{{ post.date }}</li>
-        <li>{{ post.likes }}</li>
+    <ul class="list-group">
+        <li class="list-group-item list-group-item-action">
+            <form action="{% url 'index' %}" method="post" role="form" class="row gy-3 gx-3">
+            {% csrf_token %}
+                <label for="new_post" class="form-label"><h5 class="mb-1">New post:</h5></label>
+                <input autocomplete="off" class="form-control" id="new_post" name="new_post" placeholder="Write your new post here ..." type="text">
+                <div class="text-left">
+                    <input class="btn btn-primary w-auto mx-auto mb-1" type="submit" value="Post">
+                </div>        
+            </form>
+        </li>
+        {% for post in posts %}
+            <li class="list-group-item list-group-item-action">
+                <h5 class="mb-1">{{ post.author.username }}</h5>
+                <p class="mb-1">{{ post.content }}</p>
+                <small class="text-muted">{{ post.date }}</small>
+                <p class="mb-1 text-muted">{{ post.likes }} likes</p>
+        {% endfor %}
     </ul>
-    {% endfor %}
     {% endblock %}
