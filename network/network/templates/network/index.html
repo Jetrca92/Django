@@ -1,5 +1,23 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    TODO
-{% endblock %}
+    <h2>All posts</h2>
+    <form action="{% url 'index' %}" method="post" role="form" class="row gy-3 gx-3">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="new_post" class="form-label"><h2>New post:</h2></label>
+            <input autocomplete="off" class="form-control" id="new_post" name="new_post" placeholder="Write your new post here ..." type="text">
+        </div>
+            <input class="btn btn-primary w-auto mx-auto mb-3" type="submit" value="Post">        
+    </form>
+
+    
+    {% for post in posts %}
+    <ul>
+        <li>{{ post.author.username }}</li>
+        <li>{{ post.content }}<li>
+        <li>{{ post.date }}</li>
+        <li>{{ post.likes }}</li>
+    </ul>
+    {% endfor %}
+    {% endblock %}
