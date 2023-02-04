@@ -5,8 +5,6 @@ from django.shortcuts import render
 from django.urls import reverse
 from .models import User, Post, Profile
 
-from .models import User
-
 
 def index(request):
     if request.method == "POST":
@@ -81,4 +79,28 @@ def register(request):
         return render(request, "network/register.html")
 
 def profile_page(request):
-    return render(request, "network/profile_page.html")
+    user = request.user
+    profile = Profile.objects.get(owner=user)
+    posts = Post.objects.filter(author=user)
+    
+    # Count followers and following
+    f = 0
+    fw = 0
+    if not profile.followers.exists():
+        f = 0
+    else: 
+        for follower in profile.followers:
+            f += 1
+    if not profile.following.exists():
+        fw = 0
+    else:
+        for follo in profile.following:
+            fw += 1
+    
+    return render(request, "network/profile_page.html", {
+        "user": user,
+        "profile": profile,
+        "f": f,
+        "fw": fw,
+        "posts": posts
+    })

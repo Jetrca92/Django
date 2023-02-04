@@ -1,0 +1,19 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+    <h2>{{ user.username }}</h2>
+    <p><span class="text-muted">Followers: </span><b>{{ f }}</b><p>
+    <p><span class="text-muted">Following: </span><b>{{ fw }}</b><p>
+    <h2>All posts</h2>
+        <ul class="list-group">
+        {% for post in posts %}
+            <li class="list-group-item list-group-item-action">
+                <h5 class="mb-1">{{ post.author.username }}</h5>
+                <p class="mb-1">{{ post.content }}</p>
+                <small class="text-muted">{{ post.date }}</small>
+                <p class="mb-1 text-muted">{{ post.likes }} likes</p>
+        {% endfor %}
+        </ul>
+
+        {% endblock %}
