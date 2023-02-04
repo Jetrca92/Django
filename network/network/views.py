@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import User, Post
+from .models import User, Post, Profile
 
 from .models import User
 
@@ -72,6 +72,13 @@ def register(request):
                 "message": "Username already taken."
             })
         login(request, user)
+
+        # Create Profile model for new user
+        profile = Profile(owner = user)
+        profile.save()
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+def profile_page(request):
+    return render(request, "network/profile_page.html")
