@@ -101,11 +101,11 @@ def register(request):
         return render(request, "network/register.html")
 
 def profile_page(request, username):
-    user = User.objects.get(username=username)
-    profile = Profile.objects.get(owner=user)
+    user_profile = User.objects.get(username=username)
+    profile = Profile.objects.get(owner=user_profile)
 
     # Filter posts and sort them by date
-    posts = Post.objects.filter(author=user)
+    posts = Post.objects.filter(author=user_profile)
     posts_data = []
     for post in posts:
         posts_data.append({
@@ -122,7 +122,7 @@ def profile_page(request, username):
     
     is_following = request.user in profile.followers.all()
     return render(request, "network/profile_page.html", {
-        "user": user,
+        "user_profile": user_profile,
         "profile": profile,
         "f": f,
         "fw": fw,
