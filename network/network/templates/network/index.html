@@ -18,9 +18,28 @@
         {% for post in posts %}
             <li class="list-group-item list-group-item-action">
                 <h5 class="mb-1">{{ post.author.username }}</h5>
-                <p class="mb-1">{{ post.content }}</p>
+                <p class="mb-1">{{ post.content }} <a href="#" class="link-primary text-decoration-none ms-2">Edit</a></p>
                 <small class="text-muted">{{ post.date }}</small>
                 <p class="mb-1 text-muted">{{ post.likes }} likes</p>
         {% endfor %}
     </ul>
+
+    {% if posts.has_other_pages %}
+        <ul class="pagination justify-content-center">
+            {% if posts.has_previous %}
+                <li class="page-item"><a href="?page={{ posts.previous_page_number }}" class="page-link">Previous</a></li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link">Previous</a></li>
+            {% endif %}
+            {% if posts.has_next %}
+                <li class="page-item"><a href="?page={{ posts.next_page_number }}" class="page-link">Next</a></li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link">Next</a></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+    
+    <script>
+        
+    </script>
 {% endblock %}
