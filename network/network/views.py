@@ -7,19 +7,41 @@ from .models import User, Post, Profile
 
 
 def index(request):
+    
+    # Get all posts, sort them by date (newest first)
+    posts = Post.objects.all()
+    posts_data = []
+    for post in posts:
+        posts_data.append({
+            "content": post.content,
+            "author": post.author,
+            "date": post.date,
+            "likes": post.likes
+        })
+    sorted_posts_data = sorted(posts_data, key=lambda x: x["date"], reverse=True)
+
+    # If form sent, save new post
     if request.method == "POST":
         content = request.POST["new_post"]
         author = request.user
         post = Post(author=author, content=content)
         post.save()
         posts = Post.objects.all()
+        posts_data = []
+        for post in posts:
+            posts_data.append({
+                "content": post.content,
+                "author": post.author,
+                "date": post.date,
+                "likes": post.likes
+            })
+        sorted_posts_data = sorted(posts_data, key=lambda x: x["date"], reverse=True)
         return render(request, "network/index.html", {
-            "posts": posts
+            "posts": sorted_posts_data
         })
     else:
-        posts = Post.objects.all()
         return render(request, "network/index.html", {
-            "posts": posts
+            "posts": sorted_posts_data
         })
 
 
@@ -81,8 +103,19 @@ def register(request):
 def profile_page(request):
     user = request.user
     profile = Profile.objects.get(owner=user)
+
+    # Filter posts and sort them by date
     posts = Post.objects.filter(author=user)
-    
+    posts_data = []
+    for post in posts:
+        posts_data.append({
+            "content": post.content,
+            "author": post.author,
+            "date": post.date,
+            "likes": post.likes
+        })
+    sorted_posts_data = sorted(posts_data, key=lambda x: x["date"], reverse=True)
+
     # Count followers and following
     f = 0
     fw = 0
@@ -97,10 +130,11 @@ def profile_page(request):
         for follo in profile.following:
             fw += 1
     
+    
     return render(request, "network/profile_page.html", {
         "user": user,
         "profile": profile,
         "f": f,
         "fw": fw,
-        "posts": posts
+        "posts": sorted_posts_data
     })
