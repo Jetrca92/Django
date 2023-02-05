@@ -4,11 +4,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from .models import User, Post, Profile
+from django.core.paginator import Paginator
 
 
 def index(request):
     
-    # Get all posts, sort them by date (newest first)
+    # Get all posts, sort them by date (newest first), divide in pages
     posts = Post.objects.all()
     posts_data = []
     for post in posts:
@@ -19,6 +20,9 @@ def index(request):
             "likes": post.likes
         })
     sorted_posts_data = sorted(posts_data, key=lambda x: x["date"], reverse=True)
+    paginator = Paginator(sorted_posts_data, 10)
+    page_number = request.GET.get('page')
+    posts_page = paginator.get_page(page_number)
 
     # If form sent, save new post
     if request.method == "POST":
@@ -36,12 +40,17 @@ def index(request):
                 "likes": post.likes
             })
         sorted_posts_data = sorted(posts_data, key=lambda x: x["date"], reverse=True)
+        paginator = Paginator(sorted_posts_data, 10)
+        page_number = request.GET.get('page')
+        posts_page = paginator.get_page(page_number)
         return render(request, "network/index.html", {
-            "posts": sorted_posts_data
+            "posts": posts_page,
+            "page_number": page_number
         })
     else:
         return render(request, "network/index.html", {
-            "posts": sorted_posts_data
+            "posts": posts_page,
+            "page_number": page_number
         })
 
 
@@ -160,6 +169,9 @@ def following(request):
                 "likes": post.likes
             })
     sorted_following_posts = sorted(following_posts, key=lambda x: x["date"], reverse=True)
+    paginator = Paginator(sorted_following_posts, 10)
+    page_number = request.GET.get('page')
+    posts_page = paginator.get_page(page_number)
     return render(request, "network/following.html", {
-        "following_posts": sorted_following_posts
+        "following_posts": posts_page
     })
