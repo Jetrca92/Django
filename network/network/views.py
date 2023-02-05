@@ -100,8 +100,8 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
-def profile_page(request):
-    user = request.user
+def profile_page(request, username):
+    user = User.objects.get(username=username)
     profile = Profile.objects.get(owner=user)
 
     # Filter posts and sort them by date
@@ -117,24 +117,27 @@ def profile_page(request):
     sorted_posts_data = sorted(posts_data, key=lambda x: x["date"], reverse=True)
 
     # Count followers and following
-    f = 0
-    fw = 0
-    if not profile.followers.exists():
-        f = 0
-    else: 
-        for follower in profile.followers:
-            f += 1
-    if not profile.following.exists():
-        fw = 0
-    else:
-        for follo in profile.following:
-            fw += 1
+    f = profile.followers.count()
+    fw = profile.following.count()
     
-    
+    is_following = request.user in profile.followers.all()
     return render(request, "network/profile_page.html", {
         "user": user,
         "profile": profile,
         "f": f,
         "fw": fw,
-        "posts": sorted_posts_data
+        "posts": sorted_posts_data,
+        "is_following": is_following
     })
+
+def unfollow(request, username):
+    user = User.objects.get(username=username)
+    profile = Profile.objects.get(owner=user)
+    profile.followers.remove(request.user)
+    return HttpResponseRedirect(reverse("profile_page", args=(username, )))
+
+def follow(request, username):
+    user = User.objects.get(username=username)
+    profile = Profile.objects.get(owner=user)
+    profile.followers.add(request.user)
+    return HttpResponseRedirect(reverse("profile_page", args=(username, )))

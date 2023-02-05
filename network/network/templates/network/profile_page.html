@@ -1,11 +1,26 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-
-    <h2>{{ user.username }}</h2>
+    <div class="d-flex align-items-center">
+        <h2>{{ user.username }}</h2>
+        
+        {% if user.is_authenticated %}
+            {% if is_following %}
+            <form action="{% url 'unfollow' user.username %}" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-secondary btn-sm ms-3" type="submit">Unfollow</button>
+            </form>
+            {% else %}
+            <form action="{% url 'follow' user.username %}" method="POST">
+                {% csrf_token %}
+                <button class="btn btn-secondary btn-sm ms-3">Follow</button>
+            </form>
+            {% endif %}
+        {% endif %}     
+    </div>
     <p><span class="text-muted">Followers: </span><b>{{ f }}</b><p>
     <p><span class="text-muted">Following: </span><b>{{ fw }}</b><p>
-    <h2>All posts:</h2>
+    <h2>All posts:</h2><span>
         <ul class="list-group">
         {% for post in posts %}
             <li class="list-group-item list-group-item-action">
