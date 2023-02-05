@@ -133,11 +133,33 @@ def profile_page(request, username):
 def unfollow(request, username):
     user = User.objects.get(username=username)
     profile = Profile.objects.get(owner=user)
+    user_profile = Profile.objects.get(owner=request.user)
     profile.followers.remove(request.user)
+    user_profile.following.remove(user)
+
     return HttpResponseRedirect(reverse("profile_page", args=(username, )))
 
 def follow(request, username):
     user = User.objects.get(username=username)
     profile = Profile.objects.get(owner=user)
+    user_profile = Profile.objects.get(owner=request.user)
     profile.followers.add(request.user)
+    user_profile.following.add(user)
     return HttpResponseRedirect(reverse("profile_page", args=(username, )))
+
+def following(request):
+    user_profile = Profile.objects.get(owner=request.user)
+    following_posts = []
+    for us in user_profile.following.all():
+        posts = Post.objects.filter(author=us)
+        for post in posts:
+            following_posts.append({
+                "content": post.content,
+                "author": post.author,
+                "date": post.date,
+                "likes": post.likes
+            })
+    sorted_following_posts = sorted(following_posts, key=lambda x: x["date"], reverse=True)
+    return render(request, "network/following.html", {
+        "following_posts": sorted_following_posts
+    })
