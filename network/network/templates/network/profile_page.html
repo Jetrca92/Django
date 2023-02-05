@@ -25,8 +25,11 @@
         {% for post in posts %}
             <li class="list-group-item list-group-item-action">
                 <h5 class="mb-1">{{ post.author.username }}</h5>
-                <p class="mb-1">{{ post.content }}</p>
-                <small class="text-muted">{{ post.date }}</small>
+                <p class="mb-1">{{ post.content }}
+                {% if user.username == post.author.username %}
+                    <a href="#" class="link-primary text-decoration-none ms-2" id="edit">Edit</a>
+                {% endif %}
+                </p><small class="text-muted">{{ post.date }}</small>
                 <p class="mb-1 text-muted">{{ post.likes }} likes</p>
         {% endfor %}
         </ul>
