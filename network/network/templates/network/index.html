@@ -16,12 +16,12 @@
             </li>
         {% endif %}
         {% for post in posts %}
-            <li class="list-group-item list-group-item-action" id="{{ post.id }}">
+            <li class="list-group-item list-group-item-action" id="p{{ post.id }}">
                 <a href="{% url 'profile_page' post.author.username %}" class="text-decoration-none text-reset"><h5 class="mb-1">{{ post.author.username }}</h5></a>
                 {% if user.username == post.author.username %}
-                    <a href="#" class="link-primary text-decoration-none edit-button">Edit</a>
+                    <button class="btn btn-secondary btn-sm edit-button">Edit</button>
                 {% endif %}
-                <p class="mb-1">{{ post.content }}</p>
+                <p class="mb-1 post-content">{{ post.content }}</p>
                 <small class="text-muted">{{ post.date }}</small>
                 <p class="mb-1 text-muted">{{ post.likes }} likes</p>
             </li>

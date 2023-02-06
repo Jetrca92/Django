@@ -1,32 +1,19 @@
-$(document).on('click', '.edit-button', function() {
-    // Get the post content and id
-    let postContent = $(this).closest('.list-group-item').find('.mb-1').text().trim();
-    let postId = $(this).data('id');
+document.addEventListener('DOMContentLoaded', function () {
+
+  document.querySelectorAll('.edit-button').forEach(function(button) {
+    button.addEventListener('click', function(event) {
+      event.preventDefault();
   
-    // Show the textarea and hide the post content
-    $(this).closest('.list-group-item').find('.mb-1').hide();
-    $(this).closest('.list-group-item').append(`
-      <textarea class="form-control mb-1">${postContent}</textarea>
-      <button class="btn btn-primary save-button" data-id="${postId}">Save</button>
-    `);
-  });
+      let postId = this.closest('li').id;
+      let postContent = document.querySelector(`#p${postId} .post-content`).innerHTML;
+      let textarea = document.createElement('textarea');
   
-  $(document).on('click', '.save-button', function() {
-    // Get the updated post content and id
-    let postContent = $(this).closest('.list-group-item').find('textarea').val().trim();
-    let postId = $(this).data('id');
+      textarea.value = postContent;
+      textarea.className = 'form-control';
+      textarea.rows = '3';
   
-    // Send a PUT request to the backend API
-    $.ajax({
-      url: '/api/posts/' + postId,
-      method: 'PUT',
-      data: {
-        content: postContent
-      },
-      success: function() {
-        // Update the post content in the HTML
-        $(this).closest('.list-group-item').find('.mb-1').text(postContent).show();
-        $(this).closest('.list-group-item').find('textarea, .save-button').remove();
-      }
+      postContent.innerHTML = '';
+      postContent.appendChild(textarea);
     });
   });
+});
