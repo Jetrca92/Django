@@ -5,7 +5,7 @@
     <ul class="list-group">
         {% for post in following_posts %}
             <li class="list-group-item list-group-item-action">
-                <h5 class="mb-1">{{ post.author.username }}</h5>
+                <a href="{% url 'profile_page' post.author.username %}" class="text-decoration-none text-reset"><h5 class="mb-1">{{ post.author.username }}</h5></a>
                 <p class="mb-1">{{ post.content }}</p>
                 <small class="text-muted">{{ post.date }}</small>
                 <p class="mb-1 text-muted">{{ post.likes }} likes</p>

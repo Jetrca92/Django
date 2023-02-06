@@ -17,7 +17,8 @@ def index(request):
             "content": post.content,
             "author": post.author,
             "date": post.date,
-            "likes": post.likes
+            "likes": post.likes,
+            "id": post.id
         })
     sorted_posts_data = sorted(posts_data, key=lambda x: x["date"], reverse=True)
     paginator = Paginator(sorted_posts_data, 10)
@@ -37,7 +38,8 @@ def index(request):
                 "content": post.content,
                 "author": post.author,
                 "date": post.date,
-                "likes": post.likes
+                "likes": post.likes,
+                "id": post.id
             })
         sorted_posts_data = sorted(posts_data, key=lambda x: x["date"], reverse=True)
         paginator = Paginator(sorted_posts_data, 10)
