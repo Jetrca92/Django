@@ -1,7 +1,7 @@
 # Email Client
 
 As a part of **CS50W** program, I had to build a front-end for an email client that makes API calls to send and receive emails. 
-This is a single-page-app email client implemented using JavaScript, HTML, and CSS. The application is contained in the file inbox.js.
+This is a single-page-app email client implemented using Django, JavaScript, HTML, and CSS. The application is contained in the file inbox.js.
 
 ## Features
 ### Send Mail
