@@ -1,19 +1,18 @@
-document.addEventListener('DOMContentLoaded', function () {
+var allEditBtns = document.querySelectorAll('.edit-button');
+var allEditBtnsArray = [...allEditBtns];
+allEditBtnsArray.forEach((editBtn) => {
+  editBtn.addEventListener('click', () => {
+    const postId = editBtn.parentNode.id.match(/\d+/)[0]; // Get post id
+    const p = editBtn.parentNode.querySelector('p');
+    const editArea = editBtn.parentNode.querySelector('textarea');
+    p.style.display = 'none';
+    editArea.style.display = 'block';
 
-  document.querySelectorAll('.edit-button').forEach(function(button) {
-    button.addEventListener('click', function(event) {
-      event.preventDefault();
-  
-      let postId = this.closest('li').id;
-      let postContent = document.querySelector(`#p${postId} .post-content`).innerHTML;
-      let textarea = document.createElement('textarea');
-  
-      textarea.value = postContent;
-      textarea.className = 'form-control';
-      textarea.rows = '3';
-  
-      postContent.innerHTML = '';
-      postContent.appendChild(textarea);
-    });
   });
 });
+
+function addEditText() {
+  const textArea = document.createEelement('input');
+  textArea.setAtribute('type', 'text');
+
+}

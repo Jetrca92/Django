@@ -22,6 +22,7 @@
                     <button class="btn btn-secondary btn-sm edit-button">Edit</button>
                 {% endif %}
                 <p class="mb-1 post-content">{{ post.content }}</p>
+                <textarea autocomplete="off" class="form-control edit-post-content" type="text" rows="3">{{ post.content }}</textarea>
                 <small class="text-muted">{{ post.date }}</small>
                 <p class="mb-1 text-muted">{{ post.likes }} likes</p>
             </li>
