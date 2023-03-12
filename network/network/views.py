@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from .models import User, Post, Profile
 from django.core.paginator import Paginator
@@ -177,3 +177,13 @@ def following(request):
     return render(request, "network/following.html", {
         "following_posts": posts_page
     })
+
+def update_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        post.content = content
+        post.save()
+        return JsonResponse({'content': content})
+    else:
+        return JsonResponse({'error': 'Invalid request method'})
