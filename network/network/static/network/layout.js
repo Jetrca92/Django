@@ -25,14 +25,17 @@ allSaveBtnsArray.forEach((saveBtn) => {
     const p = saveBtn.parentNode.parentNode.querySelector('p');
     const editBtn = saveBtn.parentNode.parentNode.querySelector('.edit-post-btn');
     const editPostBtn = saveBtn.parentNode.parentNode.querySelector('.edit-button');
-    p.innerHTML = textAreaValue;
 
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     // Make an AJAX call to the server to update the post content
     const postId = saveBtn.parentNode.parentNode.id.match(/\d+/)[0];
     $.ajax({
       type: 'POST',
-      url: '/update_post/' + postId + '/',
-      data: { content: textAreaValue },
+      url: '/update_post/' + postId,
+      data: { 
+        content: textAreaValue,
+        csrfmiddlewaretoken: csrftoken 
+      },
       success: function(response) {
         // On success, update the <p> element with the new content
         p.innerHTML = response.content;
