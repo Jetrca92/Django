@@ -23,6 +23,9 @@
                 {% endif %}
                 <p class="mb-1 post-content">{{ post.content }}</p>
                 <textarea autocomplete="off" class="form-control edit-post-content" type="text" rows="3">{{ post.content }}</textarea>
+                <div class="text-left">
+                    <button class="btn btn-primary w-auto mx-auto mb-1 edit-post-btn">Save</button>
+                </div>
                 <small class="text-muted">{{ post.date }}</small>
                 <p class="mb-1 text-muted">{{ post.likes }} likes</p>
             </li>
