@@ -123,7 +123,8 @@ def profile_page(request, username):
             "content": post.content,
             "author": post.author,
             "date": post.date,
-            "likes": post.likes
+            "likes": post.likes,
+            "id": post.id
         })
     sorted_posts_data = sorted(posts_data, key=lambda x: x["date"], reverse=True)
 

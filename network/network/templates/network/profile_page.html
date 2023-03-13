@@ -23,12 +23,18 @@
     <h2>All posts:</h2><span>
         <ul class="list-group">
         {% for post in posts %}
-            <li class="list-group-item list-group-item-action">
+            <li class="list-group-item list-group-item-action" id="p{{ post.id }}">
                 <h5 class="mb-1">{{ post.author.username }}</h5>
-                <p class="mb-1">{{ post.content }}
                 {% if user.username == post.author.username %}
-                    <a href="#" class="link-primary text-decoration-none ms-2" id="edit">Edit</a>
+                    <button class="btn btn-secondary btn-sm edit-button">Edit</button>
                 {% endif %}
+                <p class="mb-1">{{ post.content }}</p>
+                <textarea autocomplete="off" class="form-control edit-post-content" type="text" rows="3">{{ post.content }}</textarea>
+                {% csrf_token %}
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                <div class="text-left">
+                    <button class="btn btn-primary w-auto mx-auto mb-1 edit-post-btn">Save</button>
+                </div>
                 </p><small class="text-muted">{{ post.date }}</small>
                 <p class="mb-1 text-muted">{{ post.likes }} likes</p>
         {% endfor %}
