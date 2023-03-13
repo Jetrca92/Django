@@ -1,5 +1,5 @@
 {% extends "network/layout.html" %}
-
+{% load static %}
 {% block body %}
     <h2>All posts</h2>
     <ul class="list-group">
@@ -29,7 +29,10 @@
                     <button class="btn btn-primary w-auto mx-auto mb-1 edit-post-btn">Save</button>
                 </div>
                 <small class="text-muted">{{ post.date }}</small>
-                <p class="mb-1 text-muted">{{ post.likes }} likes</p>
+                <div class="post-likes">
+                    <p class="mb-1 text-muted">{{ post.likes }} likes</p>
+                    <img src="{% static 'network/like.jpg' %}" alt="like-btn" class="like-img" role="button">
+                </div>
             </li>
         {% endfor %}
     </ul>

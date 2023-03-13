@@ -5,3 +5,14 @@
 .edit-post-btn {
     display: none;
 }
+
+.post-likes {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.like-img {
+    width: 25px;
+    height: auto;
+}

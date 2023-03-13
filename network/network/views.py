@@ -188,3 +188,12 @@ def update_post(request, post_id):
         return JsonResponse({'content': content})
     else:
         return JsonResponse({'error': 'Invalid request method'})
+    
+def update_post_likes(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.method == 'POST':
+        post.likes += 1
+        post.save()
+        return JsonResponse({'post.likes': post.likes})
+    else:
+        return JsonResponse({'error': 'Invalid request method'})

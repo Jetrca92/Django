@@ -2,6 +2,8 @@ var allEditBtns = document.querySelectorAll('.edit-button');
 var allEditBtnsArray = [...allEditBtns];
 var allSaveBtns = document.querySelectorAll('.edit-post-btn');
 var allSaveBtnsArray = [...allSaveBtns];
+var allLikeBtns = document.querySelectorAll('.like-img');
+var allLikeBtnsArray = [...allLikeBtns];
 
 // Add event listener to edit btns, display edit area, hide post <p>
 allEditBtnsArray.forEach((editBtn) => {
@@ -49,6 +51,27 @@ allSaveBtnsArray.forEach((saveBtn) => {
     p.style.display = 'block';
     editBtn.style.display = 'none';
     editPostBtn.style.display = 'block';
+  })
+})
+
+// Update like count using fetch
+allLikeBtnsArray.forEach((likeBtn) => {
+  likeBtn.addEventListener('click', () => {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    $.ajax({
+      type: 'POST',
+      url: '/update_post_likes/' + postId,
+      data: { 
+        csrfmiddlewaretoken: csrftoken 
+      },
+      success: function(response) {
+        // On success, update the <p> element with the new content
+        post.likes = response.likes;
+      },
+      error: function(xhr, status, error) {
+        console.log('Error:', error);
+      }
+    });
   })
 })
 
