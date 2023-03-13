@@ -194,6 +194,6 @@ def update_post_likes(request, post_id):
     if request.method == 'POST':
         post.likes += 1
         post.save()
-        return JsonResponse({'post.likes': post.likes})
+        return JsonResponse({'likes': post.likes})
     else:
         return JsonResponse({'error': 'Invalid request method'})

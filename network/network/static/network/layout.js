@@ -58,6 +58,8 @@ allSaveBtnsArray.forEach((saveBtn) => {
 allLikeBtnsArray.forEach((likeBtn) => {
   likeBtn.addEventListener('click', () => {
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const postId = likeBtn.parentNode.parentNode.id.match(/\d+/)[0];
+    const p = likeBtn.parentNode.parentNode.querySelector('.post-likes');
     $.ajax({
       type: 'POST',
       url: '/update_post_likes/' + postId,
@@ -66,7 +68,7 @@ allLikeBtnsArray.forEach((likeBtn) => {
       },
       success: function(response) {
         // On success, update the <p> element with the new content
-        post.likes = response.likes;
+        p.innerHTML = `${response.likes} likes`;
       },
       error: function(xhr, status, error) {
         console.log('Error:', error);
